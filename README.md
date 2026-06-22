@@ -16,7 +16,6 @@ An advanced, highly responsive undergraduate career option-exploration workspace
 To run this application locally on your device, you only need:
 1. A standard web browser (Google Chrome, Microsoft Edge, or Mozilla Firefox).
 2. **Python 3.x** installed on your operating system (used strictly for lightweight local asset hosting).
-3. A personal, free developer API key from the **[Mistral AI Console](https://mistral.ai)**.
 
 ---
 
