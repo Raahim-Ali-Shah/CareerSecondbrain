@@ -1,5 +1,3 @@
-w6NQZCgndoQOctyftyZV85qMG9pfcnOG
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -281,29 +279,21 @@ w6NQZCgndoQOctyftyZV85qMG9pfcnOG
                 "Conclude with an italicized sentence explaining the data limits of this roadmap template and applying the explicit ±14% variance rule."
             );
 
-             try {
-               
+            try {
+                // 🔑 REPLACE 'YOUR_MISTRAL_API_KEY_HERE' WITH YOUR REAL KEY
+                const MISTRAL_API_KEY = "w6NQZCgndoQOctyftyZV85qMG9pfcnOG";
                 
-                let MISTRAL_API_KEY = ""; 
-                
-                if (MISTRAL_API_KEY === "" || MISTRAL_API_KEY.includes("YOUR_MISTRAL_API_KEY_HERE")) {
-                    MISTRAL_API_KEY = prompt("Enter your personal Mistral API Key to sync with the cloud gateway (starts with mn_...):");
-                }
-                
-                if (!MISTRAL_API_KEY) {
-                    throw new Error("Mistral API Key is required to connect to the cloud reasoning engine.");
-                }
-
                 // Direct HTTPS Fetch routing directly into Mistral's core model pipeline
-                                // 🔥 THE FIX: Point directly to the official developer endpoint, NOT the main website!
-                const response = await fetch("https://corsproxy.io", {
+                // Ensure this is a clean, standard web link inside the quotes:
+                const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
+
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${MISTRAL_API_KEY}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "mistral-small-latest",
+                        model: "mistral-small-latest", // Super fast, analytical reasoning model architecture
                         messages: [
                             { role: "system", content: systemInstruction },
                             { role: "user", content: combinedText }
@@ -312,31 +302,24 @@ w6NQZCgndoQOctyftyZV85qMG9pfcnOG
                     })
                 });
 
-
-                if (!response.ok) { 
+                if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error(`Mistral Key/Quota Block: ${errorText}`); 
+                    throw new Error(`Mistral Key/Quota Block: ${errorText}`);
                 }
-                
+
                 const resultData = await response.json();
-                
                 statusDot.className = "dot dot-emerald";
                 statusText.innerText = "Synchronized";
                 statusText.style.color = "#10b981";
-                
-                const aiMarkdown = resultData.choices.message.content;
+
+                const aiMarkdown = resultData.choices[0].message.content;
                 output.innerHTML = marked.parse(aiMarkdown);
 
             } catch (error) {
                 statusDot.className = "dot dot-gray";
                 statusText.innerText = "Connection Failed";
                 statusText.style.color = "#ef4444";
-                output.innerHTML = `
-                    <div style="padding: 16px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; color: #f87171; font-size: 13px; margin: auto auto; max-width: 90%;">
-                        <strong>API Error:</strong> ${error.message}<br>
-                        Verify that your Mistral API Key is correct and active on your console profile.
-                    </div>
-                `;
+                output.innerHTML = `<div style="padding: 16px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; color: #f87171; font-size: 13px; margin: auto auto; max-width: 90%;"> <strong>API Error:</strong> ${error.message}<br> Verify that your Mistral API Key is correct and active on your console profile. </div>`;
             }
         });
     </script>
